@@ -1,0 +1,74 @@
+import numpy as np
+from datetime import datetime
+
+
+
+def calculate_context_value(n):
+    return np.random.rand(n, n)
+
+def calculate_message_quality(n):
+    return np.random.rand(n, n)
+
+start_time = datetime.now()
+
+
+def calculate_direct_trust(context_matrix, message_quality_matrix):
+    # Adjusted calculation for direct trust to ensure it falls within [0, 1]
+    b = 0.5
+    c = 0.5
+    direct_trust = np.exp(-b * (1 - context_matrix) * (1 - message_quality_matrix))
+    return direct_trust
+
+def calculate_recommended_trust(direct_trust_matrix, history_reputation):
+    return (1 - history_reputation) * direct_trust_matrix + history_reputation
+
+def calculate_trust_value(direct_trust_matrix, recommended_trust_matrix, history_reputation):
+    lam = 0.84  # Assuming honest vehicles initially
+    sigma = 0.5  # Example value
+    return lam * history_reputation + (1 - lam) * ((1 - sigma) * direct_trust_matrix + sigma * recommended_trust_matrix)
+
+def calculate_reputation_value(trust_matrix):
+    return np.mean(trust_matrix, axis=0)
+
+def main():
+    # Input for the number of honest and malicious vehicles
+    honest_vehicles = int(input("Enter number of honest vehicles: "))
+    malicious_vehicles = int(input("Enter number of malicious vehicles: "))
+    total_vehicles = honest_vehicles + malicious_vehicles
+    
+    # Context value, message quality, direct trust, recommended trust, and trust matrices
+    context_matrix = calculate_context_value(total_vehicles)
+    message_quality_matrix = calculate_message_quality(total_vehicles)
+    
+    direct_trust_matrix = calculate_direct_trust(context_matrix, message_quality_matrix)
+    
+    # Simulate history reputation
+    history_reputation = np.zeros(total_vehicles)
+    history_reputation[:honest_vehicles] = np.random.uniform(0.7, 1.0, honest_vehicles)  # Honest vehicles have higher reputation
+    history_reputation[honest_vehicles:] = np.random.uniform(0.0, 0.4, malicious_vehicles)  # Malicious vehicles have lower reputation
+    
+    recommended_trust_matrix = calculate_recommended_trust(direct_trust_matrix, history_reputation)
+    trust_matrix = calculate_trust_value(direct_trust_matrix, recommended_trust_matrix, history_reputation)
+    
+    # Calculate reputation values for vehicles
+    reputation_values = calculate_reputation_value(trust_matrix)
+
+    end_time = datetime.now()
+
+    
+    print("\nContext Matrix:\n", context_matrix)
+    print("\nMessage Quality Matrix:\n", message_quality_matrix)
+    print("\nDirect Trust Matrix (0 to 1):\n", direct_trust_matrix)
+    print("\nRecommended Trust Matrix:\n", recommended_trust_matrix)
+    print("\nTrust Matrix:\n", trust_matrix)
+    print("\nReputation Values:\n", reputation_values)
+    print(f"\nTotal Honest Vehicles: {honest_vehicles}")
+    print(f"Total Malicious Vehicles: {malicious_vehicles}")
+
+
+
+
+if __name__ == "__main__":
+    main()
+
+ 

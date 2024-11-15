@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Credibility Model</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 1000px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            border: 1px solid #e6e6e6;
+            position: relative;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #1890ff;
+            text-transform: uppercase;
+        }
+
+        .flow-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .flow-container-row {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Adjusted to align ENC with FCC */
+            margin-bottom: 70px;
+            margin-right: -350px;
+            margin-top: -30px;
+            position: relative;
+        }
+
+        .box {
+            width: 230px;
+            padding: 20px;
+            border: 2px solid #1890ff;
+            background-color: #ffffff;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .enc-box {
+            background-color: #f9f0ff;
+            border-color: #9254de;
+            margin-top: 10px; /* Adjusted margin to make it closer */
+            margin-right: 90px; /* Adjusted to bring it closer to FCC */
+            position: relative;
+            padding: 20px 15px;
+        }
+
+        .final-box {
+            margin-top: 20px;
+            background-color: #fffbe6;
+            border-color: #faad14;
+            position: relative;
+            padding: 20px 15px;
+        }
+
+        .box:hover {
+            transform: scale(1.05);
+        }
+
+        .box h3 {
+            margin-top: 0;
+            background-color: #1890ff;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .box ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .formula {
+            margin-top: 15px;
+            font-style: italic;
+            color: #333;
+        }
+
+        /* Arrow Styles */
+        .arrow-right {
+            width: 70px;
+            height: 4px;
+            background-color: #1890ff;
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            transform: translateY(-50%);
+        }
+
+        .arrow-right::before {
+            content: '';
+            position: absolute;
+            right: -15px;
+            top: -8px;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            border-left: 20px solid #1890ff;
+        }
+
+        .arrow-left {
+            width: 70px;
+            height: 4px;
+            background-color: #1890ff;
+            position: absolute;
+            top: 50%;
+            right: 100%;
+            transform: translateY(-50%);
+        }
+
+        .arrow-left::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: -8px;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            border-right: 20px solid #1890ff;
+        }
+
+        .arrow-down {
+            width: 4px;
+            height: 70px;
+            background-color: #1890ff;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .arrow-down::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            bottom: -15px;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 20px solid #1890ff;
+        }
+
+        .final-box h3 {
+            background-color: #faad14;
+        }
+
+        .enc-box h3 {
+            background-color: #9254de;
+        }
+
+        .final-box:hover, .enc-box:hover {
+            transform: scale(1.07);
+        }
+
+        .highlight {
+            background-color: #ffffff;
+            border-color: #ffc107;
+        }
+
+        .highlight h3 {
+            background-color: #ffc107;
+        }
+
+        .highlight:hover {
+            transform: scale(1.1);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="title">Vehicle Credibility Model</div>
+
+    <div class="flow-container">
+        <!-- DCC Section -->
+        <div class="box highlight">
+            <h3>Direct Credibility Computation (DCC)</h3>
+            <ul>
+                <li>Calculate GBSS</li>
+                <li>Calculate LQ</li>
+                <li>Calculate PLR</li>
+                <li>Calculate PER</li>
+                <li>Calculate DC</li>
+            </ul>
+            <div class="formula">
+                DC = (T/Tmax) * a * LQ + b * GBSS <br>
+                / (1 + c * RT + d * PLR + e * PER)
+            </div>
+            <div class="arrow-right"></div>
+        </div>
+
+        <!-- IDCC Section -->
+        <div class="box highlight">
+            <h3>Indirect Credibility Computation (IDCC)</h3>
+            <ul>
+                <li>Take 'm' DCs</li>
+            </ul>
+            <div class="formula">
+                IDC = ∑ (DC) / (m - 1)<br>
+                (where m = total number of vehicles)
+            </div>
+            <div class="arrow-right"></div>
+        </div>
+
+        <!-- CCC Section -->
+        <div class="box highlight">
+            <h3>Current Credibility Computation (CCC)</h3>
+            <ul>
+                <li>Take IDCs</li>
+                <li>Compute CC</li>
+            </ul>
+            <div class="formula">
+                CC = α * DC + (1 - α) * IDC
+            </div>
+            <div class="arrow-down"></div>
+        </div>
+    </div>
+
+    <div class="flow-container-row">
+        <!-- ENC Section in the middle -->
+        <div class="box enc-box">
+            <h3>Edge Node Computation (ENC)</h3>
+            <ul>
+                <li>Store and update Final Credibility</li>
+                <li>Forward Previous FC for Calculating Final Credibility</li>
+            </ul>
+        </div>
+
+        <!-- FCC Section on the right -->
+        <div class="box final-box">
+            <h3>Final Credibility Computation (FCC)</h3>
+            <ul>
+                <li>Calculate FT</li>
+            </ul>
+            <div class="arrow-left"></div>
+            <div class="formula">
+                FC = γ * CC + (1 - γ) * Previous FC
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
